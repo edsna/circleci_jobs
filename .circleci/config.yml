@@ -10,11 +10,9 @@ jobs:
       - run: echo hello
       #TRIES TO SAVE CACHE
       - save_cache:
-            key: v1-my-project-{{ checksum "EDSON_ORIGIN.clj" }}
+            key: v1-my-project-{{ checksum "Edson_Cache.clj" }}
             paths:
               - ~/.m2
-
-
   print_my_env:
     docker:
       - image: circleci/node:13.8.0
@@ -23,7 +21,7 @@ jobs:
       #TRIS TO RESTORE CACHE FROM PREVIOUS JOB
       - restore_cache:
           keys:
-            - v1-my-project-{{ checksum "EDSON_DEST_CACHE.clj" }}
+            - v1-my-project-{{ checksum "Edson_Cache.clj" }}
             - v1-my-project-
     
   #Defines the second job
@@ -54,7 +52,7 @@ workflows:
           requires:
             - print_hello
       - print_env_variables
-  y_env_var:
+  My_workflow:
     jobs:
       - print_my_env
 
