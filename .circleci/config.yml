@@ -1,90 +1,18 @@
-# # Use the latest 2.1 version of CircleCI pipeline process engine. See: https://circleci.com/docs/2.0/configuration-reference
-# #Basically we have two jobs that take the same docker image and run two steps that echo/print words
-# version: 2.1
-# #defines the first job
-# jobs:
-#   print_hello: #job name
-#     docker:
-#       - image: circleci/node:13.8.0
-#     steps:
-#       - run: echo hello
-#       #TRIES TO SAVE CACHE
-#       - save_cache:
-#             key: v1-my-project-{{ checksum "Edson_Cache.clj" }}
-#             paths:
-#               - ~/.m2
-#   print_my_env:
-#     docker:
-#       - image: circleci/node:13.8.0
-#     steps:
-#       - run: echo $My_ENV_VAR
-    
-#   #Defines the second job
-#   print_world:
-#     docker:
-#       - image: circleci/node:13.8.0
-#     steps:
-#       - run: echo world
-#       #TRIES TO RESTORE CACHE FROM PREVIOUS JOB
-#       - restore_cache:
-#           keys:
-#             - v1-my-project-{{ checksum "Edson_Cache.clj" }}
-#             - v1-my-project-
-
-#   print_env_variables:
-#     docker:
-#       - image: circleci/node:13.8.0
-#     environment:
-#       CIRCLE_COMPARE_URL: << pipeline.project.git_url >>/compare/<< pipeline.git.base_revision >>..<<pipeline.git.revision>>
-#     steps:
-#       - run: echo My pipeline id is << pipeline.id >> and my git branch is << pipeline.git.branch >>. 
-#       - run: echo $CIRCLE_COMPARE_URL
-#       - run: echo $CIRCLE_BUILD_NUM
-
-
-# workflows:
-#   # Name the workflow "welcome"
-#   welcome:
-#     # Run the welcome/run job in its own container
-#     jobs:
-#       - print_hello
-#       - print_world:
-#           requires:
-#             - print_hello
-#       - print_env_variables
-#   My_workflow:
-#     jobs:
-#       - print_my_env
-
-
-#TRIES TO ECHO ENV VARIABLE ONLY
-# version: 2.1
-
-# workflows:
-#   test-env-vars:
-#     jobs:
-#       - build
-
-# jobs:
-#   build:
-#     docker:
-#       - image: cimg/base:2020.01
-#         auth:
-#           username: mydockerhub-user
-#           password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
-#     steps:
-#       - checkout
-#       - run:
-#           name: "echo an env var that is part of our project"
-#           command: |
-#             echo $MY_ENV_VAR # this env var must be set within the project         
+#GOod example of how to use attachment of workspace in a prohject
+#This one Saves a string of text into a .txt file in some directory through one job and uses another job to
+#Access the file in that direcotry and print it.
 
 version: 2.1
 #defines the first job
+defaults: &defaults
+  docker:
+    - image: circleci/node:13.8.0
+  #More instructions could come here
+  #working_direcotry: ~/project
+
 jobs:
   save_hello_world_output: #job name
-    docker:
-      - image: circleci/node:13.8.0
+    <<: *defaults
     steps:
       - run: echo "Hello World" > ~/output.txt
       - persist_to_workspace:
@@ -93,8 +21,7 @@ jobs:
             - output.txt
   #Defines the second job
   print_output_file:
-    docker:
-      - image: circleci/node:13.8.0
+    <<: *defaults
     steps:
       - attach_workspace:
           at: ~/
@@ -109,4 +36,3 @@ workflows:
       - print_output_file:
           requires:
             - save_hello_world_output
-          
