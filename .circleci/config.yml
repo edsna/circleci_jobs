@@ -18,11 +18,6 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - run: echo $My_ENV_VAR
-      #TRIS TO RESTORE CACHE FROM PREVIOUS JOB
-      - restore_cache:
-          keys:
-            - v1-my-project-{{ checksum "Edson_Cache.clj" }}
-            - v1-my-project-
     
   #Defines the second job
   print_world:
@@ -30,6 +25,11 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - run: echo world
+      #TRIES TO RESTORE CACHE FROM PREVIOUS JOB
+      - restore_cache:
+          keys:
+            - v1-my-project-{{ checksum "Edson_Cache.clj" }}
+            - v1-my-project-
 
   print_env_variables:
     docker:
