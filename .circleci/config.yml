@@ -24,6 +24,7 @@ jobs:
     steps:
       - run: echo My pipeline id is << pipeline.id >> and my git branch is << pipeline.git.branch >>. 
       - run: echo $CIRCLE_COMPARE_URL
+      - run: echo Curent build number is \<< $CIRCLE_BUILD_NUM >>.
 
 
 workflows:
