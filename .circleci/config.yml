@@ -86,9 +86,9 @@ jobs:
     docker:
       - image: circleci/node:13.8.0
     steps:
-      - run: echo "Hello World" > output.txt
+      - run: echo "Hello World" > ~/output.txt
       - persist_to_workspace:
-          root: /edson/workspace
+          root: ~/edson/workspae
           paths:
             - target/application.jar
             - build/*
@@ -98,7 +98,7 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - attach_workspace:
-          at: /edson/workspace
+          at: ~/edson/workspace
       - run: cat output.txt
 
 workflows:
