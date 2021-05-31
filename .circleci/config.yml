@@ -8,6 +8,12 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - run: echo hello
+
+  print_my_env:
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - run: echo $My_ENV_VAR
     
   #Defines the second job
   print_world:
@@ -37,4 +43,7 @@ workflows:
           requires:
             - print_hello
       - print_env_variables
+  y_env_var:
+    jobs:
+      - print_my_env
           
