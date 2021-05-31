@@ -8,7 +8,7 @@ jobs:
     steps:
       - run: return 1
       - run:
-          name: Something Went Wrong
+          name: on error
           command: echo "Ops, something failed"
           when: on_fail
 
