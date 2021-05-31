@@ -88,17 +88,16 @@ jobs:
     steps:
       - run: echo "Hello World" > ~/output.txt
       - persist_to_workspace:
-          root: ~/edson/workspae
+          root: ~/
           paths:
-            - target/application.jar
-            - build/*
+            - output.txt
   #Defines the second job
   print_output_file:
     docker:
       - image: circleci/node:13.8.0
     steps:
       - attach_workspace:
-          at: ~/edson/workspace
+          at: ~/
       - run: cat output.txt
 
 workflows:
